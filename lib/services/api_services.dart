@@ -22,7 +22,6 @@ class ApiServices {
 
   addStudent(stuData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("from api services");
     print(stuData);
     var server = await http.post(Uri.parse(url + "add_student.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()},
@@ -32,11 +31,24 @@ class ApiServices {
 
   addTeacher(teacherData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("from api services");
     print(teacherData);
     var server = await http.post(Uri.parse(url + "add_teacher.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()},
         body: json.encode(teacherData));
+    return jsonDecode(server.body);
+  }
+
+  newAdmission(stuDataTemp) async {
+    print(stuDataTemp);
+    var server = await http.post(Uri.parse(url + "new_admission.php"),
+        body: json.encode(stuDataTemp));
+    return jsonDecode(server.body);
+  }
+
+  admissionRequests() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.get(Uri.parse(url + "admission_requests.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()});
     return jsonDecode(server.body);
   }
 }

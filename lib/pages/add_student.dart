@@ -987,7 +987,7 @@ class _AddStudentState extends State<AddStudent> {
                           ),
                         ),
                         // SizedBox(height: 10),
-                        ImagePickup(parentAction: _updateMyImg),
+                        Center(child: ImagePickup(parentAction: _updateMyImg)),
                         SizedBox(height: 80),
                         continueButton(context),
                       ],

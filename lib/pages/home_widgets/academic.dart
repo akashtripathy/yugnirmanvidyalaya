@@ -34,7 +34,7 @@ class Academic extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    Navigator.pushNamed(context, "/addstudent");
+                    // Navigator.pushNamed(context, "/addstudent");
                   },
                   child: Container(
                     height: 145,

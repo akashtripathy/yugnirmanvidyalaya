@@ -18,6 +18,7 @@ class _LoginPageState extends State<LoginPage> {
 
   bool isEnable = false;
   bool isOtp = false;
+  bool isValidOtp = false;
 
   ApiServices api = new ApiServices();
 
@@ -72,8 +73,14 @@ class _LoginPageState extends State<LoginPage> {
     if (otp.text.length == 6) {
       PhoneAuthCredential cradential = PhoneAuthProvider.credential(
           verificationId: verId, smsCode: otp.text);
-      await auth.signInWithCredential(cradential);
-      await getToken();
+      try {
+        await auth.signInWithCredential(cradential);
+        isValidOtp = true;
+        await getToken();
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Invalid OTP!")));
+      }
       pd.close();
     }
   }
@@ -250,8 +257,10 @@ class _LoginPageState extends State<LoginPage> {
           onPressed: () async {
             if (isOtp) {
               await verifyOtp();
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => NavigationPage()));
+              if (isValidOtp) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => NavigationPage()));
+              }
             } else {
               ScaffoldMessenger.of(context)
                   .showSnackBar(SnackBar(content: Text("Enter Valid OTP")));

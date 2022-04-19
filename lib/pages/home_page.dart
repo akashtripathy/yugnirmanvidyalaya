@@ -18,9 +18,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<String> images = [
-    "https://yugnirmanvidyalaya.in/img/yugnirman%20vidyalaya-1.jpeg",
-    "https://yugnirmanvidyalaya.in/img/yugnirman%20vidyalaya-2.jpeg",
-    "https://yugnirmanvidyalaya.in/img/yugnirman%20vidyalaya-3.jpeg"
+    "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/Splash%2Fimages%2Fsplash-yug-nirman-vidyalaya-0?alt=media&token=7b2813c5-fc43-4442-8c3c-a463fe218e3d",
+    "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/Splash%2Fimages%2Fsplash-yug-nirman-vidyalaya-1?alt=media&token=7b2813c5-fc43-4442-8c3c-a463fe218e3d",
+    "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/Splash%2Fimages%2Fsplash-yug-nirman-vidyalaya-2?alt=media&token=7b2813c5-fc43-4442-8c3c-a463fe218e3d",
+    "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/Splash%2Fimages%2Fsplash-yug-nirman-vidyalaya-3?alt=media&token=7b2813c5-fc43-4442-8c3c-a463fe218e3d"
   ];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
@@ -41,13 +42,13 @@ class _HomePageState extends State<HomePage> {
     }
     pd.close();
     role = prefs.getString('role');
-    // print("role:" + role.toString()); TODO
+    // print("role:" + role.toString());
     if (role == "teacher" || role == "admin" || role == "principal") {
       setState(() {
         isAuth = true;
       });
     }
-    // print("isAuth:" + isAuth.toString()); TODO
+    // print("isAuth:" + isAuth.toString());
   }
 
   @override
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
               child: CircleAvatar(
                 backgroundColor: MyTheme.myGrey,
                 radius: 25,
-                backgroundImage: AssetImage("assets/images/LOGO.jpeg"), //TODO
+                backgroundImage: AssetImage("assets/images/LOGO.jpeg"),
               ),
             ),
           ),
@@ -125,14 +126,19 @@ class _HomePageState extends State<HomePage> {
               icon: Icon(Icons.notifications, color: Colors.white),
               splashRadius: 25,
             ),
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: CircleAvatar(
-                backgroundColor: MyTheme.myGrey,
-                radius: 18,
-                backgroundImage: AssetImage('assets/images/avatar.png'),
-              ),
-            ),
+            isAuth
+                ? Container()
+                : Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child: CircleAvatar(
+                      backgroundColor: MyTheme.myGrey,
+                      radius: 18,
+                      backgroundImage: widget.userData != null
+                          ? NetworkImage(widget.userData["image"])
+                          : NetworkImage(
+                              "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),
+                    ),
+                  ),
           ],
         ),
       ),

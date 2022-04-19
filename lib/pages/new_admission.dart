@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:yugnirmanvidyalaya/pages/navigation_page.dart';
+import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class NewAdmission extends StatefulWidget {
@@ -11,10 +15,20 @@ class NewAdmission extends StatefulWidget {
 
 class _NewAdmissionState extends State<NewAdmission> {
   bool isOtp = false;
+  bool isFormValidate = false;
   final _formKey = GlobalKey<FormState>();
   var date = DateTime.now();
-  int selectedValue = 1;
-  TextEditingController _dobController = TextEditingController();
+  int selectedValue = 2;
+  ApiServices api = new ApiServices();
+  late String verId;
+
+  TextEditingController phoneNo = TextEditingController();
+  TextEditingController sname = TextEditingController();
+  TextEditingController fname = TextEditingController();
+  TextEditingController mname = TextEditingController();
+  TextEditingController dob = TextEditingController();
+  String gender = "female";
+  TextEditingController otp = TextEditingController();
 
   validation() async {
     if (!_formKey.currentState!.validate()) {
@@ -23,7 +37,91 @@ class _NewAdmissionState extends State<NewAdmission> {
       });
       return false;
     }
+    isFormValidate = true;
     return true;
+  }
+
+  getOtp() async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    FirebaseAuth auth = FirebaseAuth.instance;
+    pd.show(
+        max: 100,
+        msg: 'Sending OTP...',
+        progressBgColor: MyTheme.myBlack,
+        backgroundColor: MyTheme.myBlack2);
+    await auth.verifyPhoneNumber(
+      phoneNumber: '+91' + phoneNo.text,
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {
+        pd.close();
+        if (e.code == 'invalid-phone-number') {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Phone no. is not valid")));
+        } else {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text("Something went wrong!")));
+        }
+      },
+      codeSent: (String verificationId, int? resendToken) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text("Code Send to +91 " + phoneNo.text)));
+        verId = verificationId;
+        pd.close();
+      },
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  verifyOtp() async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    FirebaseAuth auth = FirebaseAuth.instance;
+    pd.show(
+        max: 100,
+        msg: 'Please wait...',
+        progressBgColor: MyTheme.myBlack,
+        backgroundColor: MyTheme.myBlack2);
+    if (otp.text.length == 6) {
+      PhoneAuthCredential cradential = PhoneAuthProvider.credential(
+          verificationId: verId, smsCode: otp.text);
+      try {
+        await auth.signInWithCredential(cradential);
+        await addNewAdmission();
+      } catch (e) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text("Invalid OTP!")));
+      }
+      pd.close();
+    }
+  }
+
+  addNewAdmission() async {
+    ProgressDialog pd = ProgressDialog(context: context);
+    var stuDataTemp = ({
+      "phone_no": phoneNo.text,
+      "name": sname.text,
+      "dob": dob.text,
+      "gender": gender,
+      "father_name": fname.text,
+      "mother_name": mname.text
+    });
+
+    pd.show(
+        max: 100,
+        msg: 'Data adding...',
+        progressBgColor: MyTheme.myBlack,
+        backgroundColor: MyTheme.myBlack2);
+
+    var apiResult = await api.newAdmission(stuDataTemp);
+
+    if (apiResult["status"] == 1) {
+      pd.close();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('Register Successfully! Kindly Contact School')));
+    } else {
+      pd.close();
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Something went wrong: Registration Fail !")));
+    }
   }
 
   @override
@@ -56,6 +154,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         TextFormField(
+                          controller: sname,
                           keyboardType: TextInputType.name,
                           enabled: true,
                           autofocus: true,
@@ -91,8 +190,8 @@ class _NewAdmissionState extends State<NewAdmission> {
                                 width: MediaQuery.of(context).size.width * 0.5 -
                                     30,
                                 child: TextFormField(
+                                  controller: dob,
                                   readOnly: true,
-                                  controller: _dobController,
                                   validator: (value) {
                                     if (value!.isEmpty) {
                                       return "DOB is blank";
@@ -110,15 +209,12 @@ class _NewAdmissionState extends State<NewAdmission> {
                                                 (DateTime newDateTime) {
                                               setState(() {
                                                 date = newDateTime;
-                                                _dobController =
-                                                    TextEditingController(
-                                                        text: date.day.toString() +
-                                                            "/" +
-                                                            date.month
-                                                                .toString() +
-                                                            "/" +
-                                                            date.year
-                                                                .toString());
+                                                dob = TextEditingController(
+                                                    text: date.day.toString() +
+                                                        "-" +
+                                                        date.month.toString() +
+                                                        "-" +
+                                                        date.year.toString());
                                               });
                                             },
                                           ),
@@ -131,7 +227,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                                   autofocus: true,
                                   scrollPadding: EdgeInsets.zero,
                                   decoration: InputDecoration(
-                                    hintText: "DD/MM/YYYY",
+                                    hintText: "DD-MM-YYYY",
                                     labelText: "Date Of Birth",
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 0),
@@ -162,8 +258,6 @@ class _NewAdmissionState extends State<NewAdmission> {
                                   scrollPadding: EdgeInsets.zero,
                                   decoration: InputDecoration(
                                     suffixIcon: _dropDownMenu(),
-                                    // hintText: "Gender",
-
                                     labelText: "Gender",
                                     contentPadding: EdgeInsets.symmetric(
                                         horizontal: 30, vertical: 0),
@@ -187,6 +281,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: fname,
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -216,6 +311,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: mname,
                           keyboardType: TextInputType.name,
                           validator: (value) {
                             if (value!.isEmpty) {
@@ -245,6 +341,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                           height: 60,
                         ),
                         TextFormField(
+                          controller: phoneNo,
                           validator: (value) {
                             if (value!.isEmpty) {
                               return "Phone no. is blank";
@@ -286,6 +383,7 @@ class _NewAdmissionState extends State<NewAdmission> {
                           height: 10,
                         ),
                         TextFormField(
+                          controller: otp,
                           onChanged: (value) {
                             if (value.length > 5) {
                               isOtp = true;
@@ -293,8 +391,8 @@ class _NewAdmissionState extends State<NewAdmission> {
                           },
                           keyboardType: TextInputType.number,
                           maxLength: 6,
-                          enabled: true,
-                          autofocus: true,
+                          // enabled: true,
+                          // autofocus: true,
                           scrollPadding: EdgeInsets.zero,
                           textAlign: TextAlign.center,
                           style: TextStyle(fontSize: 18),
@@ -346,6 +444,13 @@ class _NewAdmissionState extends State<NewAdmission> {
         onChanged: (value) {
           setState(() {
             selectedValue = int.parse(value.toString());
+            if (selectedValue == 1) {
+              gender = "male";
+            } else if (selectedValue == 2) {
+              gender = 'female';
+            } else {
+              gender = "other";
+            }
           });
         });
   }
@@ -355,9 +460,10 @@ class _NewAdmissionState extends State<NewAdmission> {
       width: MediaQuery.of(context).size.width,
       height: 50,
       child: ElevatedButton(
-          onPressed: () {
+          onPressed: () async {
             if (isOtp) {
-              Navigator.pushReplacementNamed(context, "/navigation");
+              await verifyOtp();
+              // Navigator.push(context, MaterialPageRoute(builder: (context)=>NavigationPage()));
             }
           },
           child: Text(
@@ -382,7 +488,9 @@ class _NewAdmissionState extends State<NewAdmission> {
       child: ElevatedButton(
           onPressed: () {
             validation();
-
+            if (isFormValidate) {
+              getOtp();
+            }
             setState(() {});
           },
           child: Text(

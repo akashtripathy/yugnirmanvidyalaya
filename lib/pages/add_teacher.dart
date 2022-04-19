@@ -368,7 +368,8 @@ class _AddTeacherState extends State<AddTeacher> {
                                   borderRadius: BorderRadius.circular(10)),
                             ),
                           ),
-                          ImagePickup(parentAction: _updateMyImg),
+                          Center(
+                              child: ImagePickup(parentAction: _updateMyImg)),
                           SizedBox(height: 40),
                           continueButton(context)
                         ],

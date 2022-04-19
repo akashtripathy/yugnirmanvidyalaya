@@ -5,7 +5,9 @@ import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class ImagePickup extends StatefulWidget {
   final ValueChanged<String> parentAction;
-  const ImagePickup({Key? key, required this.parentAction}) : super(key: key);
+  final currentImg;
+  const ImagePickup({Key? key, required this.parentAction, this.currentImg})
+      : super(key: key);
 
   @override
   State<ImagePickup> createState() => _ImagePickupState();
@@ -39,10 +41,8 @@ class _ImagePickupState extends State<ImagePickup> {
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-      width: size.width,
       child: Stack(alignment: Alignment.center, children: [
         Container(
           width: 100,
@@ -52,8 +52,10 @@ class _ImagePickupState extends State<ImagePickup> {
               color: MyTheme.myBlack2,
               borderRadius: BorderRadius.all(Radius.circular(10)),
               image: _image == null
-                  ? DecorationImage(
-                      image: AssetImage('assets/images/avatar.png'))
+                  ? widget.currentImg == null
+                      ? DecorationImage(
+                          image: AssetImage('assets/images/avatar.png'))
+                      : DecorationImage(image: NetworkImage(widget.currentImg))
                   : DecorationImage(
                       image: FileImage(_image!), fit: BoxFit.fill)),
 

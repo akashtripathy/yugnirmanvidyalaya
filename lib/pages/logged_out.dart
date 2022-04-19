@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yugnirmanvidyalaya/pages/login_page.dart';
+import 'package:yugnirmanvidyalaya/pages/new_admission.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class LoggedOutPage extends StatelessWidget {
@@ -85,7 +86,10 @@ class LoggedOutPage extends StatelessWidget {
               width: width - 60,
               child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, "/newadmission");
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NewAdmission()));
                   },
                   child: Text(
                     "NEW ADMISSION",

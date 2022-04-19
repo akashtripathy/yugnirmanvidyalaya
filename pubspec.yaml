@@ -39,6 +39,14 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  
+  flutter_launcher_icons: ^0.9.0
+  change_app_package_name: ^1.0.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: false
+  image_path: "assets/icons/Yug_Nirman_Logo_PNG.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
