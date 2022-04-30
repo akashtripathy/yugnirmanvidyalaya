@@ -1,11 +1,16 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:yugnirmanvidyalaya/pages/get_students.dart';
 import 'package:yugnirmanvidyalaya/pages/home_widgets/academic.dart';
 import 'package:yugnirmanvidyalaya/pages/home_widgets/payments.dart';
 import 'package:yugnirmanvidyalaya/pages/home_widgets/sliding_image.dart';
 import 'package:yugnirmanvidyalaya/pages/notification_page.dart';
+import 'package:yugnirmanvidyalaya/pages/notificationservice/local_notification_service.dart';
+import 'package:yugnirmanvidyalaya/utils/PushNotification.dart';
 import 'package:yugnirmanvidyalaya/widgets/drawer.dart';
+import 'package:yugnirmanvidyalaya/widgets/notification_badge.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,6 +32,10 @@ class _HomePageState extends State<HomePage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   bool isAuth = false;
   var role;
+  late int _totalNotifications;
+  late final FirebaseMessaging _messaging;
+  PushNotification? _notificationInfo;
+  String deviceToken = "";
 
   checkRole() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,10 +60,99 @@ class _HomePageState extends State<HomePage> {
     // print("isAuth:" + isAuth.toString());
   }
 
+  Future<void> getDeviceToken() async {
+    final FirebaseMessaging _fcm = FirebaseMessaging.instance;
+    final token = await _fcm.getToken();
+    deviceToken = token.toString();
+    print("Token: $deviceToken");
+  }
+
   @override
   void initState() {
+    _totalNotifications = 0;
     checkRole();
+    getDeviceToken();
     super.initState();
+
+    // 1. This method call when app in terminated state and you get a notification
+    // when you click on notification app open from terminated state and you can get notification data in this method
+
+    FirebaseMessaging.instance.getInitialMessage().then(
+      (message) {
+        print("FirebaseMessaging.instance.getInitialMessage");
+        if (message != null) {
+          print("New Notification");
+          PushNotification notification = PushNotification(
+            title: message.notification?.title,
+            body: message.notification?.body,
+          );
+
+          setState(() {
+            _notificationInfo = notification;
+            _totalNotifications++;
+          });
+          if (message.data['_id'] != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) =>
+                    NotificationPage(notificationInfo: _notificationInfo),
+              ),
+            );
+          }
+        }
+      },
+    );
+
+    // 2. This method only call when App in forground it mean app must be opened
+    FirebaseMessaging.onMessage.listen(
+      (message) {
+        print("FirebaseMessaging.onMessage.listen");
+        if (message.notification != null) {
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data11 ${message.data}");
+
+          PushNotification notification = PushNotification(
+            title: message.notification?.title,
+            body: message.notification?.body,
+          );
+
+          setState(() {
+            _notificationInfo = notification;
+            _totalNotifications++;
+          });
+          LocalNotificationService.createanddisplaynotification(message);
+        }
+      },
+    );
+
+    // 3. This method only call when App in background and not terminated(not closed)
+    FirebaseMessaging.onMessageOpenedApp.listen(
+      (message) {
+        print("FirebaseMessaging.onMessageOpenedApp.listen");
+        if (message.notification != null) {
+          if (message.data['_id'] != null) {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => NotificationPage(),
+              ),
+            );
+          }
+          PushNotification notification = PushNotification(
+            title: message.notification?.title,
+            body: message.notification?.body,
+          );
+
+          setState(() {
+            _notificationInfo = notification;
+            _totalNotifications++;
+          });
+          print(message.notification!.title);
+          print(message.notification!.body);
+          print("message.data22 ${message.data['_id']}");
+        }
+      },
+    );
   }
 
   @override
@@ -109,22 +207,40 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: ((context) => GetStudents())));
+              },
               icon: Icon(
-                Icons.search,
+                Icons.people_alt,
                 color: Colors.white,
               ),
               splashRadius: 25,
             ),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NotificationPage()));
-              },
-              icon: Icon(Icons.notifications, color: Colors.white),
-              splashRadius: 25,
+            Stack(
+              alignment: Alignment.center,
+              children: [
+                IconButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => NotificationPage(
+                                  notificationInfo: _notificationInfo,
+                                )));
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.notifications, color: Colors.white),
+                  splashRadius: 25,
+                ),
+                Positioned(
+                    top: 17,
+                    right: 8,
+                    child: _totalNotifications != 0
+                        ? NotificationBadge(
+                            totalNotifications: _totalNotifications)
+                        : Container())
+              ],
             ),
             isAuth
                 ? Container()
@@ -133,7 +249,8 @@ class _HomePageState extends State<HomePage> {
                     child: CircleAvatar(
                       backgroundColor: MyTheme.myGrey,
                       radius: 18,
-                      backgroundImage: widget.userData != null
+                      backgroundImage: widget.userData != null &&
+                              widget.userData["image"] != null
                           ? NetworkImage(widget.userData["image"])
                           : NetworkImage(
                               "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),

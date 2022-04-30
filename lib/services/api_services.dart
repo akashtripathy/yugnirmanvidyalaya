@@ -22,19 +22,31 @@ class ApiServices {
 
   addStudent(stuData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(stuData);
     var server = await http.post(Uri.parse(url + "add_student.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()},
         body: json.encode(stuData));
     return jsonDecode(server.body);
   }
 
+  getAllStudents() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.get(Uri.parse(url + "get_all_students.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()});
+    return jsonDecode(server.body);
+  }
+
   addTeacher(teacherData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    print(teacherData);
     var server = await http.post(Uri.parse(url + "add_teacher.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()},
         body: json.encode(teacherData));
+    return jsonDecode(server.body);
+  }
+
+  getAllTeachers() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.get(Uri.parse(url + "get_all_teachers.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()});
     return jsonDecode(server.body);
   }
 
@@ -49,6 +61,23 @@ class ApiServices {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var server = await http.get(Uri.parse(url + "admission_requests.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()});
+    return jsonDecode(server.body);
+  }
+
+  deleteUser(phoneNo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.delete(Uri.parse(url + "delete_user.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()},
+        body: json.encode({"phone_no": phoneNo}));
+    return jsonDecode(server.body);
+  }
+
+  deleteAdmissionRequest(phoneNo) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.delete(
+        Uri.parse(url + "delete_admission_request.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()},
+        body: json.encode({"phone_no": phoneNo}));
     return jsonDecode(server.body);
   }
 }

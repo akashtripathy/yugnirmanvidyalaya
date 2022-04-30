@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
 import 'package:flutter/material.dart';
 import 'package:yugnirmanvidyalaya/pages/add_student.dart';
 import 'package:yugnirmanvidyalaya/pages/add_teacher.dart';
@@ -11,16 +11,23 @@ import 'package:yugnirmanvidyalaya/pages/login_page.dart';
 import 'package:yugnirmanvidyalaya/pages/navigation_page.dart';
 import 'package:yugnirmanvidyalaya/pages/new_admission.dart';
 import 'package:yugnirmanvidyalaya/pages/notification_page.dart';
+import 'package:yugnirmanvidyalaya/pages/notificationservice/local_notification_service.dart';
 import 'package:yugnirmanvidyalaya/pages/profile_page.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
+Future<void> backgroundHandler(RemoteMessage message) async {
+  print(message.data.toString());
+  print(message.notification!.title);
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(backgroundHandler);
+  LocalNotificationService.initialize();
   SharedPreferences prefs = await SharedPreferences.getInstance();
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // WidgetsFlutterBinding.ensureInitialized();
+  // FirebaseMessaging messaging = FirebaseMessaging.instance;
 
   Widget page = LoggedOutPage();
 

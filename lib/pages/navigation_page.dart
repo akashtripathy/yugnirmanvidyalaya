@@ -19,6 +19,7 @@ class _NavigationPageState extends State<NavigationPage> {
   DateTime currentBackPressTime = DateTime.now();
   ApiServices api = new ApiServices();
   var userData;
+  var role;
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _NavigationPageState extends State<NavigationPage> {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       await prefs.setString("role", apiResult["role"]);
       userData = apiResult['user_data'];
-      print(userData);
+      role = apiResult["role"];
     } else {
       print("Fail to fetch user data");
     }
@@ -48,6 +49,7 @@ class _NavigationPageState extends State<NavigationPage> {
       InboxPage(),
       ProfilePage(
         userData: userData,
+        role: role,
       )
     ];
 

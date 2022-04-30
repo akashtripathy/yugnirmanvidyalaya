@@ -29,6 +29,65 @@
             {
               "client_id": "388698857520-sehpl2h18n8dhfvf9s4fh50c8ta21ak7.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "388698857520-2dbofp36t69o7jeu9u2v05591i850bpa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yugnirmanvidyalaya"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388698857520:android:ecf9457485e0e2d2154df5",
+        "android_client_info": {
+          "package_name": "com.theprogrammerbro.yugnirmanvidyalaya"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388698857520-14kjnk173esek9gsjlu6gk18slnnp7b9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.theprogrammerbro.yugnirmanvidyalaya",
+            "certificate_hash": "7fcd055b9b9343ab98fb6de8a62dafc4b029a5ae"
+          }
+        },
+        {
+          "client_id": "388698857520-2mjjo6nnuhgbvnelm4laicdu15tfgsdq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.theprogrammerbro.yugnirmanvidyalaya",
+            "certificate_hash": "05646ce8b6ac56e44da5172a01405ceddf3271e7"
+          }
+        },
+        {
+          "client_id": "388698857520-sehpl2h18n8dhfvf9s4fh50c8ta21ak7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7bJ194z3I-4Aq7isJ2o2ZRJHEEYMUD6s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388698857520-sehpl2h18n8dhfvf9s4fh50c8ta21ak7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "388698857520-2dbofp36t69o7jeu9u2v05591i850bpa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.yugnirmanvidyalaya"
+              }
             }
           ]
         }

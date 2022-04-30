@@ -70,7 +70,6 @@ class _AddTeacherState extends State<AddTeacher> {
     ProgressDialog pd = ProgressDialog(context: context);
     if (imageUrl != null) {
       await uploadImg(imageUrl);
-
       pd.show(
           max: 100,
           msg: 'Data adding...',
@@ -87,6 +86,7 @@ class _AddTeacherState extends State<AddTeacher> {
       });
       var apiResult = await api.addTeacher(teacherData);
       if (apiResult["status"] == 1) {
+        Navigator.of(context).pop();
         pd.close();
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(apiResult["message"])));
@@ -139,7 +139,8 @@ class _AddTeacherState extends State<AddTeacher> {
                             controller: name,
                             keyboardType: TextInputType.name,
                             enabled: true,
-                            autofocus: true,
+                            // autofocus: true,
+
                             scrollPadding: EdgeInsets.zero,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -211,7 +212,7 @@ class _AddTeacherState extends State<AddTeacher> {
                                     },
                                     keyboardType: TextInputType.datetime,
                                     enabled: true,
-                                    autofocus: true,
+                                    // autofocus: true,
                                     scrollPadding: EdgeInsets.zero,
                                     decoration: InputDecoration(
                                       hintText: "DD-MM-YYYY",
@@ -242,7 +243,7 @@ class _AddTeacherState extends State<AddTeacher> {
                                     readOnly: true,
                                     keyboardType: TextInputType.text,
                                     enabled: true,
-                                    autofocus: true,
+                                    // autofocus: true,
                                     scrollPadding: EdgeInsets.zero,
                                     decoration: InputDecoration(
                                       suffixIcon: _dropDownMenu(),
@@ -280,7 +281,7 @@ class _AddTeacherState extends State<AddTeacher> {
                             },
                             keyboardType: TextInputType.number,
                             maxLength: 10,
-                            autofocus: true,
+                            // autofocus: true,
                             scrollPadding: EdgeInsets.zero,
                             decoration: InputDecoration(
                               counterText: "",
@@ -310,7 +311,7 @@ class _AddTeacherState extends State<AddTeacher> {
                             controller: subjectsOffered,
                             keyboardType: TextInputType.text,
                             enabled: true,
-                            autofocus: true,
+                            // autofocus: true,
                             scrollPadding: EdgeInsets.zero,
                             validator: (value) {
                               if (value!.isEmpty) {
@@ -342,7 +343,7 @@ class _AddTeacherState extends State<AddTeacher> {
                             controller: qualificaions,
                             keyboardType: TextInputType.text,
                             enabled: true,
-                            autofocus: true,
+                            // autofocus: true,
                             scrollPadding: EdgeInsets.zero,
                             validator: (value) {
                               if (value!.isEmpty) {

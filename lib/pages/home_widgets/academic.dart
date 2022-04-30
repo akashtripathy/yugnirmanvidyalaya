@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yugnirmanvidyalaya/pages/home_new_admission.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class Academic extends StatelessWidget {
@@ -34,7 +35,8 @@ class Academic extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    // Navigator.pushNamed(context, "/addstudent");
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => HomeNewAdmission()));
                   },
                   child: Container(
                     height: 145,

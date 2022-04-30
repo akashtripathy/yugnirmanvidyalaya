@@ -2,7 +2,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
-import 'package:yugnirmanvidyalaya/pages/navigation_page.dart';
 import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 

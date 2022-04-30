@@ -7,15 +7,14 @@ import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/image_pickup.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
-class AddStudent extends StatefulWidget {
-  final newStudentData;
-  const AddStudent({Key? key, this.newStudentData}) : super(key: key);
+class HomeNewAdmission extends StatefulWidget {
+  const HomeNewAdmission({Key? key}) : super(key: key);
 
   @override
-  _AddStudentState createState() => _AddStudentState();
+  _HomeNewAdmissionState createState() => _HomeNewAdmissionState();
 }
 
-class _AddStudentState extends State<AddStudent> {
+class _HomeNewAdmissionState extends State<HomeNewAdmission> {
   final _formKey = GlobalKey<FormState>();
   ApiServices api = new ApiServices();
   var date = DateTime.now();
@@ -123,7 +122,7 @@ class _AddStudentState extends State<AddStudent> {
         "mother_annual_income": minc.text
       });
 
-      var apiResult = await api.addStudent(stuData);
+      var apiResult = await api.newAdmission(stuData);
       if (apiResult["status"] == 1) {
         pd.close();
         ScaffoldMessenger.of(context)
@@ -146,90 +145,6 @@ class _AddStudentState extends State<AddStudent> {
   }
 
   @override
-  void initState() {
-    super.initState();
-
-    if (widget.newStudentData != null) {
-      mob.text = widget.newStudentData["phone_no"] == null
-          ? ""
-          : widget.newStudentData["phone_no"];
-      sname.text = widget.newStudentData["student_name"] == null
-          ? ""
-          : widget.newStudentData["student_name"];
-      dob.text = widget.newStudentData["dob"] == null
-          ? ""
-          : widget.newStudentData["dob"];
-      gender = widget.newStudentData["gender"] == null
-          ? ""
-          : widget.newStudentData["gender"];
-      bloodgroup.text = widget.newStudentData["blood_group"] == null
-          ? ""
-          : widget.newStudentData["blood_group"];
-      nationality.text = widget.newStudentData["nationality"] == null
-          ? ""
-          : widget.newStudentData["nationality"];
-      caste.text = widget.newStudentData["caste"] == null
-          ? ""
-          : widget.newStudentData["caste"];
-      religion.text = widget.newStudentData["religion"] == null
-          ? ""
-          : widget.newStudentData["religion"];
-      saadhar.text = widget.newStudentData["aadhar_no "] == null
-          ? ""
-          : widget.newStudentData["aadhar_no"];
-      cla.text = widget.newStudentData["class"] == null
-          ? ""
-          : widget.newStudentData["class"];
-      disFrSch.text = widget.newStudentData["distance"] == null
-          ? ""
-          : widget.newStudentData["distance"];
-      prevsc.text = widget.newStudentData["previous_school"] == null
-          ? ""
-          : widget.newStudentData["previous_school"];
-      downloadUrl = widget.newStudentData["image"] == null
-          ? ""
-          : widget.newStudentData["image"];
-      address.text = widget.newStudentData["address"] == null
-          ? ""
-          : widget.newStudentData["address"];
-      branch.text = widget.newStudentData["school_branch"] == null
-          ? ""
-          : widget.newStudentData["school_branch"];
-      fname.text = widget.newStudentData["father_name"] == null
-          ? ""
-          : widget.newStudentData["father_name"];
-      faadhar.text = widget.newStudentData["father_aadhar_no"] == null
-          ? ""
-          : widget.newStudentData[""];
-      fedu.text = widget.newStudentData["father_education"] == null
-          ? ""
-          : widget.newStudentData["father_education"];
-      foccu.text = widget.newStudentData["father_occupation"] == null
-          ? ""
-          : widget.newStudentData["father_occupation"];
-      finc.text = widget.newStudentData["father_annual_income"] == null
-          ? ""
-          : widget.newStudentData["father_annual_income"];
-      mname.text = widget.newStudentData["mother_name"] == null
-          ? ""
-          : widget.newStudentData["mother_name"];
-      maadhar.text = widget.newStudentData["mother_aadhar_no"] == null
-          ? ""
-          : widget.newStudentData[""];
-      medu.text = widget.newStudentData["mother_education"] == null
-          ? ""
-          : widget.newStudentData["mother_education"];
-      moccu.text = widget.newStudentData["mother_occupation"] == null
-          ? ""
-          : widget.newStudentData["mother_occupation"];
-      minc.text = widget.newStudentData["mother_annual_income"] == null
-          ? ""
-          : widget.newStudentData["mother_annual_income"];
-    }
-    setState(() {});
-  }
-
-  @override
   Widget build(BuildContext context) {
     nationality.text = "Indian";
     return Scaffold(
@@ -243,7 +158,7 @@ class _AddStudentState extends State<AddStudent> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Add Student",
+                    "New Admission",
                     style: TextStyle(
                         fontSize: 35,
                         letterSpacing: 1,
