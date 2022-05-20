@@ -116,8 +116,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Container(
-              color: MyTheme.myWhite,
-              height: 2,
+              color: MyTheme.myBlack2,
+              height: 0.5,
             ),
             InkWell(
               onTap: () {
@@ -136,8 +136,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Container(
-              color: MyTheme.myWhite,
-              height: 0.5,
+              color: MyTheme.myBlack2,
+              height: 0.2,
             ),
             InkWell(
               onTap: () {
@@ -154,8 +154,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Container(
-              color: MyTheme.myWhite,
-              height: 0.5,
+              color: MyTheme.myBlack2,
+              height: 0.2,
             ),
             InkWell(
               onTap: () {
@@ -172,8 +172,8 @@ class _MyDrawerState extends State<MyDrawer> {
               ),
             ),
             Container(
-              color: MyTheme.myWhite,
-              height: 0.5,
+              color: MyTheme.myBlack2,
+              height: 0.2,
             ),
             Container(
               // padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),

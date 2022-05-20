@@ -35,6 +35,14 @@ class ApiServices {
     return jsonDecode(server.body);
   }
 
+  updateStudent(stuData) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.put(Uri.parse(url + "update_student.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()},
+        body: json.encode(stuData));
+    return jsonDecode(server.body);
+  }
+
   addTeacher(teacherData) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     var server = await http.post(Uri.parse(url + "add_teacher.php"),
@@ -50,8 +58,15 @@ class ApiServices {
     return jsonDecode(server.body);
   }
 
+  updateTeacher(teacherData) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.put(Uri.parse(url + "update_teacher.php"),
+        headers: {"Authorization": prefs.getString("jwt").toString()},
+        body: json.encode(teacherData));
+    return jsonDecode(server.body);
+  }
+
   newAdmission(stuDataTemp) async {
-    print(stuDataTemp);
     var server = await http.post(Uri.parse(url + "new_admission.php"),
         body: json.encode(stuDataTemp));
     return jsonDecode(server.body);
@@ -78,6 +93,14 @@ class ApiServices {
         Uri.parse(url + "delete_admission_request.php"),
         headers: {"Authorization": prefs.getString("jwt").toString()},
         body: json.encode({"phone_no": phoneNo}));
+    return jsonDecode(server.body);
+  }
+
+  getTeacherInfoForStudent(cla) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var server = await http.get(
+        Uri.parse(url + "get_teacher_info_for_student.php?class=$cla"),
+        headers: {"Authorization": prefs.getString("jwt").toString()});
     return jsonDecode(server.body);
   }
 }

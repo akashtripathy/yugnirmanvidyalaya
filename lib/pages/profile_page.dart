@@ -16,8 +16,6 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(userData);
-
     logout() async {
       ProgressDialog pd = ProgressDialog(context: context);
       SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -33,8 +31,6 @@ class ProfilePage extends StatelessWidget {
           MaterialPageRoute(builder: (context) => LoggedOutPage()),
           (route) => false);
       pd.close();
-      print("pref:" + a.toString());
-      // runApp(MaterialApp(home: LoggedOutPage()));
       Navigator.of(context).pushAndRemoveUntil(
           new MaterialPageRoute(builder: (context) => LoggedOutPage()),
           (route) => false);

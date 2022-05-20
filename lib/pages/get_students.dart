@@ -1,6 +1,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sn_progress_dialog/sn_progress_dialog.dart';
+import 'package:yugnirmanvidyalaya/pages/edit_student.dart';
+import 'package:yugnirmanvidyalaya/pages/view_student.dart';
 import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
@@ -19,6 +21,7 @@ class _GetStudentsState extends State<GetStudents> {
     var apiResult = await api.getAllStudents();
     if (apiResult["status"] == 1) {
       allStudent = apiResult["data"];
+      print(apiResult["data"]);
     } else {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Something went wrong")));
@@ -114,16 +117,42 @@ class _GetStudentsState extends State<GetStudents> {
                           return Card(
                             margin: EdgeInsets.symmetric(vertical: 4),
                             child: ListTile(
-                              leading: CircleAvatar(
-                                backgroundColor: MyTheme.myGrey,
-                                backgroundImage: allStudent[index]["image"] !=
-                                        null
-                                    ? NetworkImage(allStudent[index]["image"])
-                                    : NetworkImage(
-                                        "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),
-                                radius: 20,
+                              leading: GestureDetector(
+                                onTap: () {
+                                  showModalBottomSheet(
+                                      // enableDrag: true,
+                                      constraints:
+                                          BoxConstraints(minHeight: 20.2),
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                      context: context,
+                                      builder: (context) {
+                                        return ViewStudent(
+                                            stuData: allStudent[index]);
+                                      });
+                                },
+                                onDoubleTap: () async {
+                                  await Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                    builder: (context) => EditStudent(
+                                      studentData: allStudent[index],
+                                    ),
+                                  ));
+                                  getStudents();
+                                },
+                                child: CircleAvatar(
+                                  backgroundColor: MyTheme.myGrey,
+                                  backgroundImage: allStudent[index]["image"] !=
+                                          null
+                                      ? NetworkImage(allStudent[index]["image"])
+                                      : NetworkImage(
+                                          "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),
+                                  radius: 20,
+                                ),
                               ),
-                              title: Text(allStudent[index]["student_name"]),
+                              title: Text(allStudent[index]["student_name"]
+                                  .toString()
+                                  .toUpperCase()),
                               subtitle: Row(
                                 children: [
                                   Text(allStudent[index]["phone_no"]),

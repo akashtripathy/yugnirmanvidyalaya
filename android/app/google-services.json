@@ -21,6 +21,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyD7bJ194z3I-4Aq7isJ2o2ZRJHEEYMUD6s"
+        },
+        {
+          "current_key": "AIzaSyAAmhbKPZX64xNqzIXSGLH8UbGIlQCkTSk"
         }
       ],
       "services": {
@@ -50,19 +53,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "388698857520-14kjnk173esek9gsjlu6gk18slnnp7b9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.theprogrammerbro.yugnirmanvidyalaya",
-            "certificate_hash": "7fcd055b9b9343ab98fb6de8a62dafc4b029a5ae"
-          }
-        },
-        {
           "client_id": "388698857520-2mjjo6nnuhgbvnelm4laicdu15tfgsdq.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.theprogrammerbro.yugnirmanvidyalaya",
             "certificate_hash": "05646ce8b6ac56e44da5172a01405ceddf3271e7"
+          }
+        },
+        {
+          "client_id": "388698857520-rhg7qvn5fihh6brffr55qk1ldgj93vl9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.theprogrammerbro.yugnirmanvidyalaya",
+            "certificate_hash": "7fcd055b9b9343ab98fb6de8a62dafc4b029a5ae"
           }
         },
         {
@@ -73,6 +76,9 @@
       "api_key": [
         {
           "current_key": "AIzaSyD7bJ194z3I-4Aq7isJ2o2ZRJHEEYMUD6s"
+        },
+        {
+          "current_key": "AIzaSyAAmhbKPZX64xNqzIXSGLH8UbGIlQCkTSk"
         }
       ],
       "services": {

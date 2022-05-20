@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yugnirmanvidyalaya/pages/home_new_admission.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
+import 'package:yugnirmanvidyalaya/widgets/view_pdf.dart';
 
 class Academic extends StatelessWidget {
   const Academic({Key? key}) : super(key: key);
@@ -71,7 +72,14 @@ class Academic extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        print("syllabus");
+                        var path =
+                            "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/PDF%2FCURRICULUM.pdf?alt=media&token=cbf88c58-6897-407f-957a-6dbeefa4aa9b";
+                        var page = "Curriculum";
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewPdf(
+                                  path: path,
+                                  page: page,
+                                )));
                       },
                       child: Container(
                         height: 70,
@@ -89,7 +97,7 @@ class Academic extends StatelessWidget {
                               height: 30,
                             ),
                             Text(
-                              "SYLLABUS",
+                              "CURRICULUM",
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w500,
@@ -105,6 +113,14 @@ class Academic extends StatelessWidget {
                     InkWell(
                       onTap: () {
                         print("fees structure");
+                        var path =
+                            "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/PDF%2FFEE%20STRUCTURE.pdf?alt=media&token=eda6bfea-2a09-4100-934d-061fec63eecc";
+                        var page = "Fee Structure";
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewPdf(
+                                  path: path,
+                                  page: page,
+                                )));
                       },
                       child: Container(
                         height: 70,
@@ -142,7 +158,14 @@ class Academic extends StatelessWidget {
                   children: [
                     InkWell(
                       onTap: () {
-                        print("time table");
+                        var path =
+                            "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/PDF%2FTIME%20TABLE.pdf?alt=media&token=3ecc1c69-0f49-4e2a-ae58-52837b90443a";
+                        var page = "Time Table";
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewPdf(
+                                  path: path,
+                                  page: page,
+                                )));
                       },
                       child: Container(
                         height: 70,
@@ -175,7 +198,14 @@ class Academic extends StatelessWidget {
                     ),
                     InkWell(
                       onTap: () {
-                        print("about us");
+                        var path =
+                            "https://firebasestorage.googleapis.com/v0/b/yug-nirman-vidyalaya.appspot.com/o/PDF%2FABOUT%20US.pdf?alt=media&token=c68b974f-bc70-45f6-b895-4938f1c2066a";
+                        var page = "About Us";
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ViewPdf(
+                                  path: path,
+                                  page: page,
+                                )));
                       },
                       child: Container(
                         height: 70,

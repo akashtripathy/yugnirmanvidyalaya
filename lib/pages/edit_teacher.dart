@@ -7,14 +7,15 @@ import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/image_pickup.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
-class AddTeacher extends StatefulWidget {
-  const AddTeacher({Key? key}) : super(key: key);
+class EditTeacher extends StatefulWidget {
+  final teacherData;
+  const EditTeacher({Key? key, this.teacherData}) : super(key: key);
 
   @override
-  _AddTeacherState createState() => _AddTeacherState();
+  _EditTeacherState createState() => _EditTeacherState();
 }
 
-class _AddTeacherState extends State<AddTeacher> {
+class _EditTeacherState extends State<EditTeacher> {
   final _formKey = GlobalKey<FormState>();
   ApiServices api = new ApiServices();
   var date = DateTime.now();
@@ -68,11 +69,13 @@ class _AddTeacherState extends State<AddTeacher> {
 
   addTeacherData() async {
     ProgressDialog pd = ProgressDialog(context: context);
-    if (imageUrl != null) {
-      await uploadImg(imageUrl);
+    if (downloadUrl != null) {
+      if (imageUrl != null) {
+        await uploadImg(imageUrl);
+      }
       pd.show(
           max: 100,
-          msg: 'Data adding...',
+          msg: 'Data Upadting...',
           progressBgColor: MyTheme.myBlack,
           backgroundColor: MyTheme.myBlack2);
       var teacherData = ({
@@ -85,9 +88,8 @@ class _AddTeacherState extends State<AddTeacher> {
         "class_teacher": classTeacher.text,
         "image": downloadUrl
       });
-      var apiResult = await api.addTeacher(teacherData);
+      var apiResult = await api.updateTeacher(teacherData);
       if (apiResult["status"] == 1) {
-        Navigator.of(context).pop();
         pd.close();
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text(apiResult["message"])));
@@ -109,6 +111,37 @@ class _AddTeacherState extends State<AddTeacher> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    if (widget.teacherData != null) {
+      mob.text = widget.teacherData["phone_no"] == null
+          ? ""
+          : widget.teacherData["phone_no"];
+      dob.text =
+          widget.teacherData["dob"] == null ? "" : widget.teacherData["dob"];
+      name.text = widget.teacherData["teacher_name"] == null
+          ? ""
+          : widget.teacherData["teacher_name"];
+      qualificaions.text = widget.teacherData["qualifications"] == null
+          ? ""
+          : widget.teacherData["qualifications"];
+      subjectsOffered.text = widget.teacherData["subjects_offered"] == null
+          ? ""
+          : widget.teacherData["subjects_offered"];
+      classTeacher.text = widget.teacherData["class_teacher"] == null
+          ? ""
+          : widget.teacherData["class_teacher"];
+      gender = widget.teacherData["gender"] == null
+          ? ""
+          : widget.teacherData["gender"];
+      downloadUrl = widget.teacherData["image"] == null
+          ? ""
+          : widget.teacherData["image"];
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
@@ -121,7 +154,7 @@ class _AddTeacherState extends State<AddTeacher> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Add Teacher",
+                      "Edit Teacher",
                       style: TextStyle(
                           fontSize: 35,
                           letterSpacing: 1,
@@ -282,7 +315,7 @@ class _AddTeacherState extends State<AddTeacher> {
                             },
                             keyboardType: TextInputType.number,
                             maxLength: 10,
-                            // autofocus: true,
+                            readOnly: true,
                             scrollPadding: EdgeInsets.zero,
                             decoration: InputDecoration(
                               counterText: "",
@@ -403,7 +436,10 @@ class _AddTeacherState extends State<AddTeacher> {
                             ),
                           ),
                           Center(
-                              child: ImagePickup(parentAction: _updateMyImg)),
+                              child: ImagePickup(
+                            parentAction: _updateMyImg,
+                            currentImg: downloadUrl,
+                          )),
                           SizedBox(height: 40),
                           continueButton(context)
                         ],

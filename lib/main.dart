@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
+      // debugShowCheckedModeBanner: false,
       title: 'Yug Nirman Vidyalaya',
       themeMode: ThemeMode.light,
       theme: MyTheme.lightTheme(context),

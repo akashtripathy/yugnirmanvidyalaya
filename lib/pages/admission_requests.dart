@@ -22,7 +22,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
     } else {
       print("fail to fetch data");
     }
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   deleteARequest(aRequest) async {
@@ -76,7 +76,7 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
           ),
         ),
         body: studentsData == null
-            ? Center(child: Text("Currently there is no request"))
+            ? Center(child: CircularProgressIndicator())
             : ListView.builder(
                 itemCount: studentsData.length,
                 itemBuilder: (context, index) {
@@ -97,25 +97,29 @@ class _AdmissionRequestsState extends State<AdmissionRequests> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Student's Name: ${studentsData[index]["student_name"]}",
-                                      style: TextStyle(fontSize: 15),
-                                    ),
-                                    SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      "Phone no.: +91 ${studentsData[index]["phone_no"]}",
-                                      style: TextStyle(fontSize: 15),
-                                    )
-                                  ],
+                                Container(
+                                  width: size.width * 0.6,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Student's Name: ${studentsData[index]["student_name"]}",
+                                        style: TextStyle(fontSize: 15),
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "Phone no.: +91 ${studentsData[index]["phone_no"]}",
+                                        style: TextStyle(fontSize: 15),
+                                      )
+                                    ],
+                                  ),
                                 ),
-                                SizedBox(
-                                  width: 10,
-                                ),
+                                // SizedBox(
+                                //   width: 10,
+                                // ),
                                 IconButton(
                                     onPressed: () {
                                       showDialog<String>(

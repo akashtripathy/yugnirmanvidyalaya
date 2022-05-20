@@ -1,6 +1,8 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:sn_progress_dialog/progress_dialog.dart';
+import 'package:yugnirmanvidyalaya/pages/edit_teacher.dart';
+import 'package:yugnirmanvidyalaya/pages/view_teacher.dart';
 import 'package:yugnirmanvidyalaya/services/api_services.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
@@ -181,16 +183,45 @@ class _AdminViewState extends State<AdminView> {
                                         margin:
                                             EdgeInsets.symmetric(vertical: 7),
                                         child: ListTile(
-                                          leading: CircleAvatar(
-                                            backgroundColor: MyTheme.myGrey,
-                                            backgroundImage: allTeachers[index]
-                                                        ["image"] !=
-                                                    null
-                                                ? NetworkImage(
-                                                    allTeachers[index]["image"])
-                                                : NetworkImage(
-                                                    "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),
-                                            radius: 20,
+                                          leading: GestureDetector(
+                                            onTap: () {
+                                              showModalBottomSheet(
+                                                  // enableDrag: true,
+                                                  constraints: BoxConstraints(
+                                                      minHeight: 20.2),
+                                                  isScrollControlled: true,
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  context: context,
+                                                  builder: (context) {
+                                                    return ViewTeacher(
+                                                        teacherData:
+                                                            allTeachers[index]);
+                                                  });
+                                            },
+                                            onDoubleTap: () async {
+                                              await Navigator.of(context)
+                                                  .push(MaterialPageRoute(
+                                                builder: (context) =>
+                                                    EditTeacher(
+                                                  teacherData:
+                                                      allTeachers[index],
+                                                ),
+                                              ));
+                                              getTeachers();
+                                            },
+                                            child: CircleAvatar(
+                                              backgroundColor: MyTheme.myGrey,
+                                              backgroundImage: allTeachers[
+                                                          index]["image"] !=
+                                                      null
+                                                  ? NetworkImage(
+                                                      allTeachers[index]
+                                                          ["image"])
+                                                  : NetworkImage(
+                                                      "https://yugnirmanvidyalaya.in/img/profile_avatar.png"),
+                                              radius: 20,
+                                            ),
                                           ),
                                           title: Text(allTeachers[index]
                                               ["teacher_name"]),

@@ -51,20 +51,18 @@ class _HomePageState extends State<HomePage> {
     }
     pd.close();
     role = prefs.getString('role');
-    // print("role:" + role.toString());
     if (role == "teacher" || role == "admin" || role == "principal") {
       setState(() {
         isAuth = true;
       });
     }
-    // print("isAuth:" + isAuth.toString());
   }
 
   Future<void> getDeviceToken() async {
     final FirebaseMessaging _fcm = FirebaseMessaging.instance;
     final token = await _fcm.getToken();
     deviceToken = token.toString();
-    print("Token: $deviceToken");
+    // print("Token: $deviceToken");
   }
 
   @override
@@ -79,9 +77,7 @@ class _HomePageState extends State<HomePage> {
 
     FirebaseMessaging.instance.getInitialMessage().then(
       (message) {
-        print("FirebaseMessaging.instance.getInitialMessage");
         if (message != null) {
-          print("New Notification");
           PushNotification notification = PushNotification(
             title: message.notification?.title,
             body: message.notification?.body,
@@ -106,11 +102,10 @@ class _HomePageState extends State<HomePage> {
     // 2. This method only call when App in forground it mean app must be opened
     FirebaseMessaging.onMessage.listen(
       (message) {
-        print("FirebaseMessaging.onMessage.listen");
         if (message.notification != null) {
-          print(message.notification!.title);
-          print(message.notification!.body);
-          print("message.data11 ${message.data}");
+          // print(message.notification!.title);
+          // print(message.notification!.body);
+          // print("message.data11 ${message.data}");
 
           PushNotification notification = PushNotification(
             title: message.notification?.title,
@@ -129,7 +124,6 @@ class _HomePageState extends State<HomePage> {
     // 3. This method only call when App in background and not terminated(not closed)
     FirebaseMessaging.onMessageOpenedApp.listen(
       (message) {
-        print("FirebaseMessaging.onMessageOpenedApp.listen");
         if (message.notification != null) {
           if (message.data['_id'] != null) {
             Navigator.of(context).push(
@@ -147,9 +141,9 @@ class _HomePageState extends State<HomePage> {
             _notificationInfo = notification;
             _totalNotifications++;
           });
-          print(message.notification!.title);
-          print(message.notification!.body);
-          print("message.data22 ${message.data['_id']}");
+          // print(message.notification!.title);
+          // print(message.notification!.body);
+          // print("message.data22 ${message.data['_id']}");
         }
       },
     );
@@ -206,17 +200,19 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           actions: [
-            IconButton(
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: ((context) => GetStudents())));
-              },
-              icon: Icon(
-                Icons.people_alt,
-                color: Colors.white,
-              ),
-              splashRadius: 25,
-            ),
+            isAuth
+                ? IconButton(
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: ((context) => GetStudents())));
+                    },
+                    icon: Icon(
+                      Icons.people_alt,
+                      color: Colors.white,
+                    ),
+                    splashRadius: 25,
+                  )
+                : Container(),
             Stack(
               alignment: Alignment.center,
               children: [
