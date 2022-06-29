@@ -27,7 +27,7 @@ class _ViewFormState extends State<ViewForm> {
           },
         ),
         title: Text(
-          "Application Form",
+          widget.docName,
           style: TextStyle(color: MyTheme.myWhite),
         ),
       ),

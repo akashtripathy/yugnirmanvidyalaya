@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yugnirmanvidyalaya/widgets/form_pdf.dart';
+import 'package:yugnirmanvidyalaya/widgets/student_id_card.dart';
 import 'package:yugnirmanvidyalaya/widgets/theme.dart';
 
 class ViewStudent extends StatelessWidget {
@@ -58,11 +59,28 @@ class ViewStudent extends StatelessWidget {
                         ),
                       ],
                     ),
-                    IconButton(
-                        onPressed: () {
-                          orderPdfView(context, stuData);
-                        },
-                        icon: Icon(Icons.download))
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: IconButton(
+                          padding: EdgeInsets.zero,
+                          iconSize: 20,
+                          onPressed: () {
+                            orderPdfView(context, stuData);
+                          },
+                          icon: Icon(Icons.download)),
+                    ),
+                    Container(
+                      height: 20,
+                      width: 20,
+                      child: IconButton(
+                          padding: EdgeInsets.zero,
+                          iconSize: 20,
+                          onPressed: () {
+                            generateStudentId(context, stuData);
+                          },
+                          icon: Icon(Icons.add_card)),
+                    )
                   ],
                 ),
                 SizedBox(height: 20),
