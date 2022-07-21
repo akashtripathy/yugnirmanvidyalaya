@@ -148,7 +148,6 @@ class _AddStudentState extends State<AddStudent> {
   @override
   void initState() {
     super.initState();
-
     if (widget.newStudentData != null) {
       mob.text = widget.newStudentData["phone_no"] == null
           ? ""
@@ -174,7 +173,7 @@ class _AddStudentState extends State<AddStudent> {
       religion.text = widget.newStudentData["religion"] == null
           ? ""
           : widget.newStudentData["religion"];
-      saadhar.text = widget.newStudentData["aadhar_no "] == null
+      saadhar.text = widget.newStudentData["aadhar_no"] == null
           ? ""
           : widget.newStudentData["aadhar_no"];
       cla.text = widget.newStudentData["class"] == null
@@ -200,7 +199,7 @@ class _AddStudentState extends State<AddStudent> {
           : widget.newStudentData["father_name"];
       faadhar.text = widget.newStudentData["father_aadhar_no"] == null
           ? ""
-          : widget.newStudentData[""];
+          : widget.newStudentData["father_aadhar_no"];
       fedu.text = widget.newStudentData["father_education"] == null
           ? ""
           : widget.newStudentData["father_education"];
@@ -215,7 +214,7 @@ class _AddStudentState extends State<AddStudent> {
           : widget.newStudentData["mother_name"];
       maadhar.text = widget.newStudentData["mother_aadhar_no"] == null
           ? ""
-          : widget.newStudentData[""];
+          : widget.newStudentData["mother_aadhar_no"];
       medu.text = widget.newStudentData["mother_education"] == null
           ? ""
           : widget.newStudentData["mother_education"];
@@ -1071,7 +1070,11 @@ class _AddStudentState extends State<AddStudent> {
                           ),
                         ),
                         // SizedBox(height: 10),
-                        Center(child: ImagePickup(parentAction: _updateMyImg)),
+                        Center(
+                            child: ImagePickup(
+                          parentAction: _updateMyImg,
+                          currentImg: downloadUrl,
+                        )),
                         SizedBox(height: 80),
                         continueButton(context),
                       ],
